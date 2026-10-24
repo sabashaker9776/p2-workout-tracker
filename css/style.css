@@ -34,7 +34,11 @@ body {
   bottom: -70px;
   width: 180px;
   height: 180px;
-  background: linear-gradient(135deg, transparent 49%, rgba(255,255,255,0.025) 50%);
+  background: linear-gradient(
+    135deg,
+    transparent 49%,
+    rgba(255, 255, 255, 0.025) 50%
+  );
   transform: rotate(12deg);
 }
 
@@ -83,7 +87,9 @@ body {
   height: 3px;
   background: transparent;
   transform: scaleX(0.5);
-  transition: transform 160ms ease, background-color 160ms ease;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
 }
 
 .anatomy-tab:hover {
@@ -116,8 +122,12 @@ body {
   margin: 8px 0 18px;
   overflow: hidden;
   border-radius: 18px;
-  background:
-    radial-gradient(ellipse at 50% 42%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.42) 42%, rgba(240,240,242,0) 75%);
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.42) 42%,
+    rgba(240, 240, 242, 0) 75%
+  );
 }
 
 .body-view {
@@ -266,6 +276,11 @@ body {
     height: 275px;
   }
 
+  .body-image {
+    height: 275px;
+    max-width: 100%;
+  }
+
   .metric-card {
     min-height: 170px;
   }
@@ -274,5 +289,16 @@ body {
 @media (min-width: 768px) and (max-width: 1023px) {
   .metrics-column .metric-card {
     min-height: 190px;
+  }
+}
+
+/* Let the duplicate meal rows share the full height of the right column. */
+.meal-entry--right {
+  flex: 1 1 0%;
+}
+
+@media (max-width: 767px) {
+  .meal-entry--right {
+    min-height: 105px;
   }
 }

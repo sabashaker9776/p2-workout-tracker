@@ -16,36 +16,22 @@
   <div class="min-h-screen p-3 sm:p-5 lg:p-8">
     <main class="mx-auto grid max-w-[1440px] grid-cols-1 overflow-hidden rounded-2xl bg-white shadow-2xl md:grid-cols-2 lg:grid-cols-12">
 
-      <!-- Top-left: Morning Walk -->
-      <section class="morning-panel flex min-h-[230px] flex-col justify-between gap-8 bg-[#4962f4] p-6 text-white sm:p-8 lg:col-span-5">
-        <div>
-          <div class="flex items-center gap-3">
-            <span class="text-2xl" aria-hidden="true">🌤️</span>
-            <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Morning Walk</h1>
-          </div>
+      <!-- Top-left: Total calories burned -->
+      <section class="total-calory-panel flex min-h-[230px] flex-col justify-between gap-8 bg-[#4962f4] p-6 text-white sm:p-8 lg:col-span-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl" aria-hidden="true">🔥</span>
+          <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Total Calory</h1>
         </div>
 
-        <div class="flex flex-wrap items-center gap-x-8 gap-y-5">
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-white/10 text-xl" aria-hidden="true">🏃</div>
-            <div>
-              <p class="text-sm text-white/70">Running</p>
-              <p class="text-lg font-semibold">130 km</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-white/10 text-xl" aria-hidden="true">⌚</div>
-            <div>
-              <p class="text-sm text-white/70">Duration</p>
-              <p class="text-lg font-semibold">31:12 h</p>
-            </div>
-          </div>
+        <div>
+          <p class="text-sm text-white/75">Calories burned today</p>
+          <!-- Demo value: replace 450 with the actual total calories burned. -->
+          <p class="mt-1 text-4xl font-bold tracking-tight sm:text-5xl">450 <span class="text-xl font-semibold">kcal</span></p>
         </div>
       </section>
 
       <!-- Top-right: Static intro banner -->
-      <section class="activity-intro relative flex min-h-[230px] flex-col justify-center overflow-hidden bg-[#191a23] p-6 text-white sm:p-8 lg:col-span-7">
+      <section class="activity-intro relative flex min-h-[230px] flex-col justify-center overflow-hidden bg-[#191a23] p-6 text-white sm:p-8 lg:col-span-8">
         <div class="relative z-10 max-w-xl">
           <h2 class="flex items-center gap-3 text-xl font-semibold sm:text-2xl">
             <span aria-hidden="true">🔥</span>
@@ -134,7 +120,7 @@
         </div>
       </section>
 
-      <!-- Center column: CSS-only tabs with empty image slots -->
+      <!-- Center column: CSS-only tabs with local anatomy images -->
       <section class="anatomy-panel bg-[#f0f0f2] p-5 sm:p-7 md:col-span-1 lg:col-span-5">
         <div class="anatomy-selector">
           <!-- Radio inputs power the tabs without JavaScript. -->
@@ -152,27 +138,19 @@
 
           <div class="body-stage">
             <div class="body-view body-view--chest">
-              <!-- Replace this empty slot with your chest image when ready. -->
-              <div class="image-placeholder" role="img" aria-label="Empty chest image area"></div>
-              <p class="placeholder-caption">Chest image goes here</p>
+              <img class="body-image" src="./assets/chest.png" alt="Chest muscles highlighted with a blue hotspot" loading="lazy">
             </div>
 
             <div class="body-view body-view--shoulder">
-              <!-- Replace this empty slot with your shoulder image when ready. -->
-              <div class="image-placeholder" role="img" aria-label="Empty shoulder image area"></div>
-              <p class="placeholder-caption">Shoulder image goes here</p>
+              <img class="body-image" src="./assets/shoulder.png" alt="Shoulder muscles highlighted with a blue hotspot" loading="lazy">
             </div>
 
             <div class="body-view body-view--abs">
-              <!-- Replace this empty slot with your abs image when ready. -->
-              <div class="image-placeholder" role="img" aria-label="Empty abs image area"></div>
-              <p class="placeholder-caption">Abs image goes here</p>
+              <img class="body-image" src="./assets/abs.png" alt="Abdominal muscles highlighted with a blue hotspot" loading="lazy">
             </div>
 
             <div class="body-view body-view--legs">
-              <!-- Replace this empty slot with your legs image when ready. -->
-              <div class="image-placeholder" role="img" aria-label="Empty legs image area"></div>
-              <p class="placeholder-caption">Legs image goes here</p>
+              <img class="body-image" src="./assets/legs.png" alt="Leg muscles highlighted with a blue hotspot" loading="lazy">
             </div>
           </div>
         </div>
@@ -183,71 +161,56 @@
         </div>
       </section>
 
-      <!-- Right column: Metric cards (sample/static values for now) -->
-      <section class="metrics-column grid grid-cols-1 gap-0 bg-white md:col-span-2 md:grid-cols-3 lg:col-span-3 lg:grid-cols-1">
-        <article class="metric-card flex min-h-[185px] flex-col justify-between bg-[#f3f3f5] p-5 sm:p-6">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="text-xl font-semibold">Calories</h2>
-            <div class="gauge gauge--calories" aria-label="Calories gauge">
-              <div class="gauge-needle"></div>
-              <div class="gauge-pin"></div>
+      <!-- Right column: Duplicate meal list -->
+      <section class="meal-list-column flex flex-col bg-white md:col-span-2 lg:col-span-3">
+        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 border-b border-black/5 bg-[#f3f3f5] px-5 py-5 sm:px-6">
+          <div class="flex min-w-0 items-center gap-4">
+            <span class="text-3xl" aria-hidden="true">🥣</span>
+            <div class="min-w-0">
+              <p class="text-sm text-[#858691]">Oatmeal &amp; fruit</p>
+              <h2 class="text-lg font-semibold">Breakfast</h2>
             </div>
           </div>
-          <div class="flex items-end justify-between gap-4">
-            <div>
-              <p class="text-sm text-[#858691]">Consumed</p>
-              <p class="mt-1 text-sm font-semibold">130 Cal</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-[#858691]">Remaining</p>
-              <p class="mt-1 text-sm font-semibold">70 Cal</p>
-            </div>
-          </div>
-        </article>
+          <p class="shrink-0 text-sm font-semibold">210 kcal</p>
+        </div>
 
-        <article class="metric-card flex min-h-[185px] flex-col justify-between bg-[#e6e6e9] p-5 sm:p-6">
-          <div class="flex items-center justify-between gap-4">
-            <h2 class="text-xl font-semibold">Heart</h2>
-            <svg class="h-12 w-28 shrink-0" viewBox="0 0 120 48" fill="none" aria-label="Heart-rate line chart" role="img">
-              <path d="M2 31H15L25 7C26 4 29 4 30 8L36 38C37 42 40 42 42 37L52 17C54 13 57 14 58 18L63 34H76L87 8C89 3 92 4 93 9L99 38C100 42 103 42 105 37L111 27H119" stroke="#4d63ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="flex items-end justify-between gap-4">
-            <div>
-              <p class="text-sm text-[#858691]">Today</p>
-              <p class="mt-1 text-sm font-semibold">110 Bpm</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-[#858691]">Yesterday</p>
-              <p class="mt-1 text-sm font-semibold">130 Bpm</p>
+        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 border-b border-black/5 px-5 py-5 sm:px-6">
+          <div class="flex min-w-0 items-center gap-4">
+            <span class="text-3xl" aria-hidden="true">🍲</span>
+            <div class="min-w-0">
+              <p class="text-sm text-[#858691]">Brazilian Stew</p>
+              <h2 class="text-lg font-semibold">Lunch</h2>
             </div>
           </div>
-        </article>
+          <p class="shrink-0 text-sm font-semibold">123 kcal</p>
+        </div>
 
-        <article class="metric-card flex min-h-[185px] flex-col justify-between bg-[#f3f3f5] p-5 sm:p-6">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="text-xl font-semibold">Water</h2>
-            <div class="gauge gauge--water" aria-label="Water intake gauge">
-              <div class="gauge-needle gauge-needle--water"></div>
-              <div class="gauge-pin"></div>
+        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 border-b border-black/5 bg-[#f3f3f5] px-5 py-5 sm:px-6">
+          <div class="flex min-w-0 items-center gap-4">
+            <span class="text-3xl" aria-hidden="true">🌭</span>
+            <div class="min-w-0">
+              <p class="text-sm text-[#858691]">Brazilian Stew</p>
+              <h2 class="text-lg font-semibold">Dinner</h2>
             </div>
           </div>
-          <div class="flex items-end justify-between gap-4">
-            <div>
-              <p class="text-sm text-[#858691]">Consumed</p>
-              <p class="mt-1 text-sm font-semibold">3 L</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-[#858691]">Remaining</p>
-              <p class="mt-1 text-sm font-semibold">05 L</p>
+          <p class="shrink-0 text-sm font-semibold">120 kcal</p>
+        </div>
+
+        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 px-5 py-5 sm:px-6">
+          <div class="flex min-w-0 items-center gap-4">
+            <span class="text-3xl" aria-hidden="true">🍎</span>
+            <div class="min-w-0">
+              <p class="text-sm text-[#858691]">Apple &amp; almonds</p>
+              <h2 class="text-lg font-semibold">Snack</h2>
             </div>
           </div>
-        </article>
+          <p class="shrink-0 text-sm font-semibold">95 kcal</p>
+        </div>
       </section>
     </main>
 
     <p class="mx-auto mt-4 max-w-[1440px] px-1 text-xs text-[#777984]">
-      Workout Tracker UI · Demo values are static. The body-part tabs work with HTML and CSS only.
+      Workout Tracker UI · Sample calorie and meal values. Select a body part to view its highlighted muscles.
     </p>
   </div>
 </body>
