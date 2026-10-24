@@ -1,0 +1,278 @@
+/* Small custom styles for details that are easier to express in CSS.
+   Most layout, spacing, colors and typography use Tailwind utility classes. */
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.activity-intro::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: 7%;
+  top: -155px;
+  border: 1px solid rgba(255, 255, 255, 0.025);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 32px rgba(255, 255, 255, 0.018),
+    0 0 0 68px rgba(255, 255, 255, 0.014);
+}
+
+.activity-intro::after {
+  content: "";
+  position: absolute;
+  right: -25px;
+  bottom: -70px;
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, transparent 49%, rgba(255,255,255,0.025) 50%);
+  transform: rotate(12deg);
+}
+
+.nutrition-card {
+  min-height: 150px;
+}
+
+.anatomy-selector {
+  position: relative;
+}
+
+.tab-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.anatomy-tabs {
+  min-height: 48px;
+}
+
+.anatomy-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 2px;
+  color: #777985;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.anatomy-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: transparent;
+  transform: scaleX(0.5);
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.anatomy-tab:hover {
+  color: #292d42;
+}
+
+#tab-chest:checked ~ .anatomy-tabs label[for="tab-chest"],
+#tab-shoulder:checked ~ .anatomy-tabs label[for="tab-shoulder"],
+#tab-abs:checked ~ .anatomy-tabs label[for="tab-abs"],
+#tab-legs:checked ~ .anatomy-tabs label[for="tab-legs"] {
+  color: #20243b;
+}
+
+#tab-chest:checked ~ .anatomy-tabs label[for="tab-chest"]::after,
+#tab-shoulder:checked ~ .anatomy-tabs label[for="tab-shoulder"]::after,
+#tab-abs:checked ~ .anatomy-tabs label[for="tab-abs"]::after,
+#tab-legs:checked ~ .anatomy-tabs label[for="tab-legs"]::after {
+  background: #4d63ff;
+  transform: scaleX(1);
+}
+
+.tab-radio:focus-visible + .anatomy-tabs label {
+  outline: 2px solid #4d63ff;
+  outline-offset: 4px;
+}
+
+.body-stage {
+  position: relative;
+  min-height: 390px;
+  margin: 8px 0 18px;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.42) 42%, rgba(240,240,242,0) 75%);
+}
+
+.body-view {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+#tab-chest:checked ~ .body-stage .body-view--chest,
+#tab-shoulder:checked ~ .body-stage .body-view--shoulder,
+#tab-abs:checked ~ .body-stage .body-view--abs,
+#tab-legs:checked ~ .body-stage .body-view--legs {
+  display: flex;
+}
+
+.image-placeholder {
+  width: min(100%, 260px);
+  height: 315px;
+  border: 1px dashed rgba(125, 130, 148, 0.24);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* When your anatomy artwork is ready, replace .image-placeholder with:
+   <img class="body-image" src="./assets/chest.png" alt="Chest muscles"> */
+.body-image {
+  display: block;
+  width: min(100%, 300px);
+  height: 330px;
+  object-fit: contain;
+}
+
+.placeholder-caption {
+  color: #a0a1aa;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.gauge {
+  position: relative;
+  width: 112px;
+  height: 58px;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.gauge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 270deg,
+    #4d63ff 0deg 142deg,
+    #aab5ff 142deg 174deg,
+    #d4d5dc 174deg 180deg,
+    transparent 180deg 360deg
+  );
+}
+
+.gauge::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 19px;
+  width: 74px;
+  height: 74px;
+  border: 1px solid #8b8d96;
+  border-radius: 50%;
+  background: #f3f3f5;
+}
+
+.gauge-needle {
+  position: absolute;
+  z-index: 2;
+  left: 54px;
+  bottom: 7px;
+  width: 4px;
+  height: 26px;
+  border-radius: 5px;
+  background: #252832;
+  transform: rotate(12deg);
+  transform-origin: bottom center;
+}
+
+.gauge-needle::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  bottom: -4px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #252832;
+  border-radius: 50%;
+  background: #f3f3f5;
+}
+
+.gauge-pin {
+  position: absolute;
+  z-index: 3;
+  left: 51px;
+  bottom: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #252832;
+}
+
+.gauge--water::before {
+  background: conic-gradient(
+    from 270deg,
+    #4d63ff 0deg 125deg,
+    #aab5ff 125deg 174deg,
+    #d4d5dc 174deg 180deg,
+    transparent 180deg 360deg
+  );
+}
+
+.gauge-needle--water {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .morning-panel,
+  .activity-intro {
+    min-height: 205px;
+  }
+
+  .nutrition-card {
+    min-height: 135px;
+  }
+
+  .body-stage {
+    min-height: 350px;
+  }
+
+  .image-placeholder {
+    height: 275px;
+  }
+
+  .metric-card {
+    min-height: 170px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .metrics-column .metric-card {
+    min-height: 190px;
+  }
+}
