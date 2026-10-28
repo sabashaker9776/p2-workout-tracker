@@ -1,217 +1,336 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Workout Tracker dashboard UI">
-  <title>Workout Tracker</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Workout Tracker dashboard UI" />
+    <title>Workout Tracker</title>
 
-  <!-- Tailwind CSS browser build for a quick HTML-only prototype.
+    <!-- Tailwind CSS browser build for a quick HTML-only prototype.
        For a production project, use the Tailwind CLI/build setup. -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="./css/style.css">
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
 
-<body class="bg-[#e8e8ec] font-sans text-[#20212b] antialiased">
-  <div class="min-h-screen p-3 sm:p-5 lg:p-8">
-    <main class="mx-auto grid max-w-[1440px] grid-cols-1 overflow-hidden rounded-2xl bg-white shadow-2xl md:grid-cols-2 lg:grid-cols-12">
+  <body class="bg-[#e8e8ec] font-sans text-[#20212b] antialiased">
+    <div class="min-h-screen p-3 sm:p-5 lg:p-8">
+      <main
+        class="mx-auto grid max-w-[1440px] grid-cols-1 overflow-hidden rounded-2xl bg-white shadow-2xl md:grid-cols-2 lg:grid-cols-12"
+      >
+        <!-- Top-left: Latest activity (mirrors the last activity in the right list) -->
+        <section
+          class="latest-activity-panel flex min-h-[230px] flex-col justify-between gap-6 bg-[#4962f4] p-6 text-white sm:p-8 lg:col-span-4"
+          aria-live="polite"
+        >
+          <div class="flex items-center gap-3">
+            <span id="latest-activity-icon" class="text-2xl" aria-hidden="true"
+              >🏃</span
+            >
+            <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Latest Activity
+            </h1>
+          </div>
 
-      <!-- Top-left: Total calories burned -->
-      <section class="total-calory-panel flex min-h-[230px] flex-col justify-between gap-8 bg-[#4962f4] p-6 text-white sm:p-8 lg:col-span-4">
-        <div class="flex items-center gap-3">
-          <span class="text-2xl" aria-hidden="true">🔥</span>
-          <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Total Calory</h1>
+          <div>
+            <p id="latest-activity-description" class="text-sm text-white/75">
+              Cardio session · 15 min
+            </p>
+            <p
+              id="latest-activity-name"
+              class="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl"
+            >
+              Running
+            </p>
+            <p class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+              <span id="latest-activity-calories">80</span>
+              <span class="text-xl font-semibold">kcal burned</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- Top-right: Static intro banner -->
+        <section
+          class="activity-intro relative flex min-h-[230px] flex-col justify-center overflow-hidden bg-[#191a23] p-6 text-white sm:p-8 lg:col-span-8"
+        >
+          <div class="relative z-10 max-w-xl">
+            <h2
+              class="daily-activity-heading flex items-center gap-3 text-xl font-semibold sm:text-2xl"
+            >
+              <span aria-hidden="true">🔥</span>
+              <span>Track your Daily Activity</span>
+              <button
+                id="add-activity-button"
+                class="add-activity-button"
+                type="button"
+                aria-label="Add activity"
+                aria-haspopup="dialog"
+                aria-controls="activity-modal"
+                title="Add activity"
+              >
+                <span aria-hidden="true">+</span>
+              </button>
+            </h2>
+            <p class="mt-6 max-w-lg text-sm leading-6 text-white/45">
+              Contrary to popular belief, Lorem Ipsum is simply random text.
+              Lorem Ipsum is simply random text.
+            </p>
+          </div>
+          <div class="intro-orbit" aria-hidden="true"></div>
+        </section>
+
+        <!-- Left column: Calorie summary cards and dynamic meal list -->
+        <section class="flex flex-col bg-white md:col-span-1 lg:col-span-4">
+          <div class="grid grid-cols-2">
+            <!-- Calories burned: negative calories -->
+            <article
+              class="nutrition-card border-b border-r border-white/[0.04] bg-[#191b2b] p-5 sm:p-6"
+            >
+              <div class="mb-4 text-2xl text-orange-400" aria-hidden="true">
+                🔥
+              </div>
+              <p class="text-sm text-white/45">Calories Burned (−)</p>
+              <p
+                id="burned-calories-value"
+                class="mt-1 text-lg font-medium text-white"
+              >
+                −450 kcal
+              </p>
+            </article>
+
+            <!-- Calories consumed: positive calories -->
+            <article
+              class="nutrition-card border-b border-white/[0.04] bg-[#171a36] p-5 sm:p-6"
+            >
+              <div class="mb-4 text-2xl text-emerald-300" aria-hidden="true">
+                🍽️
+              </div>
+              <p class="text-sm text-white/45">Calories Consumed (+)</p>
+              <p
+                id="consumed-calories-value"
+                class="mt-1 text-lg font-medium text-white"
+              >
+                +548 kcal
+              </p>
+            </article>
+
+            <!-- Net calorie balance: consumed minus burned -->
+            <article
+              class="nutrition-card border-r border-white/[0.04] bg-[#20212b] p-5 sm:p-6"
+            >
+              <div class="mb-4 text-2xl text-amber-300" aria-hidden="true">
+                ⚖️
+              </div>
+              <p class="text-sm text-white/45">Net Calorie Balance</p>
+              <p
+                id="calorie-balance-value"
+                class="mt-1 text-lg font-medium text-white"
+              >
+                +98 kcal
+              </p>
+            </article>
+
+            <!-- Sign of the daily balance -->
+            <article class="nutrition-card bg-[#191a27] p-5 sm:p-6">
+              <div
+                id="daily-sign-symbol"
+                class="mb-3 text-3xl font-bold text-emerald-300"
+                aria-hidden="true"
+              >
+                +
+              </div>
+              <p class="text-sm text-white/45">Daily Balance Status</p>
+              <p
+                id="daily-status"
+                class="mt-1 text-lg font-medium text-white"
+                aria-live="polite"
+              >
+                Positive
+              </p>
+            </article>
+          </div>
+
+          <div id="meal-list" class="flex-1 meal-list" aria-label="Food entries"></div>
+        </section>
+
+        <!-- Center column: CSS-only tabs with local anatomy images -->
+        <section
+          class="anatomy-panel bg-[#f0f0f2] p-5 sm:p-7 md:col-span-1 lg:col-span-5"
+        >
+          <div class="anatomy-selector">
+            <!-- Radio inputs power the tabs without JavaScript. -->
+            <input
+              class="tab-radio"
+              type="radio"
+              name="body-part"
+              id="tab-chest"
+              checked
+            />
+            <input
+              class="tab-radio"
+              type="radio"
+              name="body-part"
+              id="tab-shoulder"
+            />
+            <input
+              class="tab-radio"
+              type="radio"
+              name="body-part"
+              id="tab-abs"
+            />
+            <input
+              class="tab-radio"
+              type="radio"
+              name="body-part"
+              id="tab-legs"
+            />
+
+            <div
+              class="anatomy-tabs flex items-center justify-between gap-3 border-b border-black/10"
+            >
+              <label class="anatomy-tab" for="tab-chest">Chest</label>
+              <label class="anatomy-tab" for="tab-shoulder">Shoulder</label>
+              <label class="anatomy-tab" for="tab-abs">Abs</label>
+              <label class="anatomy-tab" for="tab-legs">Legs</label>
+            </div>
+
+            <div class="body-stage">
+              <div class="body-view body-view--chest">
+                <img
+                  class="body-image"
+                  src="./assets/chest.png"
+                  alt="Chest muscles highlighted with a blue hotspot"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="body-view body-view--shoulder">
+                <img
+                  class="body-image"
+                  src="./assets/shoulder.png"
+                  alt="Shoulder muscles highlighted with a blue hotspot"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="body-view body-view--abs">
+                <img
+                  class="body-image"
+                  src="./assets/abs.png"
+                  alt="Abdominal muscles highlighted with a blue hotspot"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="body-view body-view--legs">
+                <img
+                  class="body-image"
+                  src="./assets/legs.png"
+                  alt="Leg muscles highlighted with a blue hotspot"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="flex items-center justify-between gap-4 border-t border-black/10 pt-4 text-xs font-medium text-[#858691]"
+          >
+            <p>Height: <span class="text-[#555762]">6ft 4inch</span></p>
+            <p>Weight: <span class="text-[#555762]">145 lbs</span></p>
+          </div>
+        </section>
+
+        <!-- Right column: Daily activity list rendered from calorieData -->
+        <section
+          id="activity-list"
+          class="activity-list-column flex flex-col bg-white md:col-span-2 lg:col-span-3"
+          aria-label="Daily activities"
+        ></section>
+      </main>
+
+      <p class="mx-auto mt-4 max-w-[1440px] px-1 text-xs text-[#777984]">
+        Workout Tracker UI · Sample calorie and activity values. Select a body
+        part to view its highlighted muscles.
+      </p>
+    </div>
+
+
+    <!-- Add activity modal -->
+    <dialog id="activity-modal" class="activity-modal" aria-labelledby="activity-modal-title">
+      <form id="activity-form" class="activity-form" novalidate>
+        <div class="activity-modal-header">
+          <div>
+            <p class="activity-modal-eyebrow">WORKOUT TRACKER</p>
+            <h2 id="activity-modal-title">Add Activity</h2>
+            <p class="activity-modal-subtitle">Record a workout and its calories burned.</p>
+          </div>
+          <button
+            type="button"
+            class="activity-modal-close"
+            data-close-modal
+            aria-label="Close dialog"
+            title="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
 
-        <div>
-          <p class="text-sm text-white/75">Calories burned today</p>
-          <!-- Demo value: replace 450 with the actual total calories burned. -->
-          <p class="mt-1 text-4xl font-bold tracking-tight sm:text-5xl">450 <span class="text-xl font-semibold">kcal</span></p>
-        </div>
-      </section>
+        <div class="activity-form-fields">
+          <label class="activity-form-field" for="activity-name">
+            <span>Activity name</span>
+            <input
+              id="activity-name"
+              name="activityName"
+              type="text"
+              maxlength="60"
+              placeholder="e.g. Swimming"
+              autocomplete="off"
+              required
+            />
+          </label>
 
-      <!-- Top-right: Static intro banner -->
-      <section class="activity-intro relative flex min-h-[230px] flex-col justify-center overflow-hidden bg-[#191a23] p-6 text-white sm:p-8 lg:col-span-8">
-        <div class="relative z-10 max-w-xl">
-          <h2 class="flex items-center gap-3 text-xl font-semibold sm:text-2xl">
-            <span aria-hidden="true">🔥</span>
-            <span>Track your Daily Activity</span>
-          </h2>
-          <p class="mt-6 max-w-lg text-sm leading-6 text-white/45">
-            Contrary to popular belief, Lorem Ipsum is simply random text.
-            Lorem Ipsum is simply random text.
+          <div class="activity-form-grid">
+            <label class="activity-form-field" for="activity-duration">
+              <span>Duration <small>(minutes)</small></span>
+              <input
+                id="activity-duration"
+                name="duration"
+                type="number"
+                min="1"
+                max="1440"
+                step="1"
+                placeholder="30"
+                required
+              />
+            </label>
+
+            <label class="activity-form-field" for="activity-calories">
+              <span>Calories burned <small>(kcal)</small></span>
+              <input
+                id="activity-calories"
+                name="calories"
+                type="number"
+                min="1"
+                max="10000"
+                step="1"
+                placeholder="120"
+                required
+              />
+            </label>
+          </div>
+          <p class="activity-form-hint">
+            Enter calories as a positive number. The tracker stores burned calories as negative values.
           </p>
-        </div>
-        <div class="intro-orbit" aria-hidden="true"></div>
-      </section>
-
-      <!-- Left column: Static nutrition cards and meal list -->
-      <section class="flex flex-col bg-white md:col-span-1 lg:col-span-4">
-        <div class="grid grid-cols-2">
-          <article class="nutrition-card border-b border-r border-white/[0.04] bg-[#191b2b] p-5 sm:p-6">
-            <div class="mb-4 text-2xl text-[#e76b91]" aria-hidden="true">🍗</div>
-            <p class="text-sm text-white/45">Protein</p>
-            <p class="mt-1 text-lg font-medium text-white">15/40g</p>
-          </article>
-
-          <article class="nutrition-card border-b border-white/[0.04] bg-[#171a36] p-5 sm:p-6">
-            <div class="mb-4 text-2xl text-cyan-400" aria-hidden="true">🌾</div>
-            <p class="text-sm text-white/45">Carbs</p>
-            <p class="mt-1 text-lg font-medium text-white">15/40g</p>
-          </article>
-
-          <article class="nutrition-card border-r border-white/[0.04] bg-[#20212b] p-5 sm:p-6">
-            <div class="mb-4 text-2xl text-orange-400" aria-hidden="true">♨️</div>
-            <p class="text-sm text-white/45">Fat</p>
-            <p class="mt-1 text-lg font-medium text-white">15/40g</p>
-          </article>
-
-          <article class="nutrition-card bg-[#191a27] p-5 sm:p-6">
-            <div class="mb-4 text-2xl text-cyan-400" aria-hidden="true">💧</div>
-            <p class="text-sm text-white/45">Water</p>
-            <p class="mt-1 text-lg font-medium text-white">01/05 L</p>
-          </article>
+          <p id="activity-form-error" class="activity-form-error" role="alert" hidden></p>
         </div>
 
-        <div class="flex-1">
-          <div class="flex items-center justify-between border-b border-black/5 bg-[#f3f3f5] px-5 py-5 sm:px-6">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl" aria-hidden="true">🥣</span>
-              <div>
-                <p class="text-sm text-[#858691]">Oatmeal & fruit</p>
-                <h3 class="text-lg font-semibold">Breakfast</h3>
-              </div>
-            </div>
-            <p class="text-sm font-semibold">Cal-210 kcal</p>
-          </div>
-
-          <div class="flex items-center justify-between border-b border-black/5 px-5 py-5 sm:px-6">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl" aria-hidden="true">🍲</span>
-              <div>
-                <p class="text-sm text-[#858691]">Brazilian Stew</p>
-                <h3 class="text-lg font-semibold">Lunch</h3>
-              </div>
-            </div>
-            <p class="text-sm font-semibold">Cal-123 kcal</p>
-          </div>
-
-          <div class="flex items-center justify-between border-b border-black/5 bg-[#f3f3f5] px-5 py-5 sm:px-6">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl" aria-hidden="true">🌭</span>
-              <div>
-                <p class="text-sm text-[#858691]">Brazilian Stew</p>
-                <h3 class="text-lg font-semibold">Dinner</h3>
-              </div>
-            </div>
-            <p class="text-sm font-semibold">Cal-120 kcal</p>
-          </div>
-
-          <div class="flex items-center justify-between px-5 py-5 sm:px-6">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl" aria-hidden="true">🍎</span>
-              <div>
-                <p class="text-sm text-[#858691]">Apple & almonds</p>
-                <h3 class="text-lg font-semibold">Snack</h3>
-              </div>
-            </div>
-            <p class="text-sm font-semibold">Cal-95 kcal</p>
-          </div>
+        <div class="activity-form-actions">
+          <button type="button" class="activity-button-secondary" data-close-modal>Cancel</button>
+          <button type="submit" class="activity-button-primary">Add Activity</button>
         </div>
-      </section>
+      </form>
+    </dialog>
 
-      <!-- Center column: CSS-only tabs with local anatomy images -->
-      <section class="anatomy-panel bg-[#f0f0f2] p-5 sm:p-7 md:col-span-1 lg:col-span-5">
-        <div class="anatomy-selector">
-          <!-- Radio inputs power the tabs without JavaScript. -->
-          <input class="tab-radio" type="radio" name="body-part" id="tab-chest" checked>
-          <input class="tab-radio" type="radio" name="body-part" id="tab-shoulder">
-          <input class="tab-radio" type="radio" name="body-part" id="tab-abs">
-          <input class="tab-radio" type="radio" name="body-part" id="tab-legs">
-
-          <div class="anatomy-tabs flex items-center justify-between gap-3 border-b border-black/10">
-            <label class="anatomy-tab" for="tab-chest">Chest</label>
-            <label class="anatomy-tab" for="tab-shoulder">Shoulder</label>
-            <label class="anatomy-tab" for="tab-abs">Abs</label>
-            <label class="anatomy-tab" for="tab-legs">Legs</label>
-          </div>
-
-          <div class="body-stage">
-            <div class="body-view body-view--chest">
-              <img class="body-image" src="./assets/chest.png" alt="Chest muscles highlighted with a blue hotspot" loading="lazy">
-            </div>
-
-            <div class="body-view body-view--shoulder">
-              <img class="body-image" src="./assets/shoulder.png" alt="Shoulder muscles highlighted with a blue hotspot" loading="lazy">
-            </div>
-
-            <div class="body-view body-view--abs">
-              <img class="body-image" src="./assets/abs.png" alt="Abdominal muscles highlighted with a blue hotspot" loading="lazy">
-            </div>
-
-            <div class="body-view body-view--legs">
-              <img class="body-image" src="./assets/legs.png" alt="Leg muscles highlighted with a blue hotspot" loading="lazy">
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between gap-4 border-t border-black/10 pt-4 text-xs font-medium text-[#858691]">
-          <p>Height: <span class="text-[#555762]">6ft 4inch</span></p>
-          <p>Weight: <span class="text-[#555762]">145 lbs</span></p>
-        </div>
-      </section>
-
-      <!-- Right column: Duplicate meal list -->
-      <section class="meal-list-column flex flex-col bg-white md:col-span-2 lg:col-span-3">
-        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 border-b border-black/5 bg-[#f3f3f5] px-5 py-5 sm:px-6">
-          <div class="flex min-w-0 items-center gap-4">
-            <span class="text-3xl" aria-hidden="true">🥣</span>
-            <div class="min-w-0">
-              <p class="text-sm text-[#858691]">Oatmeal &amp; fruit</p>
-              <h2 class="text-lg font-semibold">Breakfast</h2>
-            </div>
-          </div>
-          <p class="shrink-0 text-sm font-semibold">210 kcal</p>
-        </div>
-
-        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 border-b border-black/5 px-5 py-5 sm:px-6">
-          <div class="flex min-w-0 items-center gap-4">
-            <span class="text-3xl" aria-hidden="true">🍲</span>
-            <div class="min-w-0">
-              <p class="text-sm text-[#858691]">Brazilian Stew</p>
-              <h2 class="text-lg font-semibold">Lunch</h2>
-            </div>
-          </div>
-          <p class="shrink-0 text-sm font-semibold">123 kcal</p>
-        </div>
-
-        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 border-b border-black/5 bg-[#f3f3f5] px-5 py-5 sm:px-6">
-          <div class="flex min-w-0 items-center gap-4">
-            <span class="text-3xl" aria-hidden="true">🌭</span>
-            <div class="min-w-0">
-              <p class="text-sm text-[#858691]">Brazilian Stew</p>
-              <h2 class="text-lg font-semibold">Dinner</h2>
-            </div>
-          </div>
-          <p class="shrink-0 text-sm font-semibold">120 kcal</p>
-        </div>
-
-        <div class="meal-entry meal-entry--right flex min-h-[125px] flex-1 items-center justify-between gap-3 px-5 py-5 sm:px-6">
-          <div class="flex min-w-0 items-center gap-4">
-            <span class="text-3xl" aria-hidden="true">🍎</span>
-            <div class="min-w-0">
-              <p class="text-sm text-[#858691]">Apple &amp; almonds</p>
-              <h2 class="text-lg font-semibold">Snack</h2>
-            </div>
-          </div>
-          <p class="shrink-0 text-sm font-semibold">95 kcal</p>
-        </div>
-      </section>
-    </main>
-
-    <p class="mx-auto mt-4 max-w-[1440px] px-1 text-xs text-[#777984]">
-      Workout Tracker UI · Sample calorie and meal values. Select a body part to view its highlighted muscles.
-    </p>
-  </div>
-</body>
+    <script src="./script.js" defer></script>
+  </body>
 </html>
